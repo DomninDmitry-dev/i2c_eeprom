@@ -6,10 +6,7 @@
 *.cmd
 *.mod.c
 *.cache.mk
-*.cproject
-*.project
 *.dwo
 test
 /.tmp_versions
-/.settings
 /.tracecompass
