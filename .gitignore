@@ -1,0 +1,16 @@
+*.swp
+*.o
+*.symvers
+*.order
+*.ko
+*.cmd
+*.mod.c
+*.cache.mk
+*.cproject
+*.project
+*.dwo
+*.sh
+test
+/.tmp_versions
+/.settings
+/.tracecompass
