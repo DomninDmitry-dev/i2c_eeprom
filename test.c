@@ -50,7 +50,7 @@ int main(int argc, char **argv)
 	{
 		printf("ERROR: ioctl error\n");
 		close(fd);
-		return -1;
+		exit(EXIT_FAILURE);
 	}
 
 	// Split the 16 bit memory address into two bytes
@@ -75,7 +75,7 @@ int main(int argc, char **argv)
 	// Write memory address again
 	write(fd, (const void*)addr, 2);
 
-	// Read 128 bytes
+	// Read bytes
 	int r = read(fd, rbuf, sizeof(rbuf));
 	printf("R: %d\n", r);
 

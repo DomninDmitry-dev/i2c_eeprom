@@ -9,7 +9,6 @@
 *.cproject
 *.project
 *.dwo
-*.sh
 test
 /.tmp_versions
 /.settings

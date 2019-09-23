@@ -2,20 +2,18 @@ DEV_KERNEL_DIR = 4.19.59-sunxi
 HOST_KERNEL_DIR = orange-pi-4.19.59
 PROJ_NAME = prog-i2c-eeprom
 DEV_ROOT_IP = root@192.168.0.120
-MOD_DIR = gpio
 DTB_NAME = sun8i-h3-orangepi-one
 USER_DIR=dmitry
 
-ifeq ($(shell uname -r), $(DEV_KERNEL_DIR))
-	KDIR = /lib/modules/$(shell uname -r)/build
-else
+ifeq ($(shell uname -m), x86_64)
 	KDIR = $(HOME)/Kernels/$(HOST_KERNEL_DIR)
+else
+	KDIR = /lib/modules/$(shell uname -r)/build
 endif
 
 ARCH = arm
 CCFLAGS = -C
 COMPILER_PROG = arm-unknown-linux-gnueabihf-
-COMPILER = arm-linux-gnueabihf-
 PWD = $(shell pwd)
 TARGET_PROG = test
 REMFLAGS = -g -O0
@@ -34,17 +32,17 @@ obj-m   := $(TARGET_MOD).o
 CFLAGS_$(TARGET_MOD).o := -DDEBUG
 
 all: $(TARGET_PROG).c
-ifeq ($(shell uname -r), $(DEV_KERNEL_DIR))
-	cc $(TARGET_PROG).c -o $(TARGET_PROG) $(REMFLAGS)
-else
+ifeq ($(shell uname -m), x86_64)
 	$(COMPILER_PROG)cc $(TARGET_PROG).c -o $(TARGET_PROG) $(REMFLAGS)
+else
+	cc $(TARGET_PROG).c -o $(TARGET_PROG) $(REMFLAGS)
 endif
 
 
 reboot_dev:
 	@./commands.sh -c reboot -devip $(DEV_ROOT_IP)
 copy_prog:
-	@./commands.sh -c copy-prog -projname $(PROJ_NAME) -devip $(DEV_ROOT_IP) -userdir $(USER_DIR)
+	@./commands.sh -c copy-prog -projname $(PROJ_NAME) -progname $(TARGET_PROG) -devip $(DEV_ROOT_IP) -userdir $(USER_DIR)
 
 clean:
 	@rm -f *.o .*.cmd .*.flags *.mod.c *.order *.dwo *.mod.dwo .*.dwo
