@@ -1,9 +1,16 @@
 DEV_KERNEL_DIR = 4.19.59-sunxi
 HOST_KERNEL_DIR = orange-pi-4.19.59
 PROJ_NAME = prog-i2c-eeprom
-DEV_ROOT_IP = root@192.168.0.120
 DTB_NAME = sun8i-h3-orangepi-one
-USER_DIR=dmitry
+USER_DIR = dmitry
+
+ifeq ($(shell uname -n), ThinkPad-T430s)
+	DEV_ROOT_IP = root@192.168.0.120
+	PORT = 0
+else
+	DEV_ROOT_IP = root@185.200.62.68
+	PORT = 10120
+endif
 
 ifeq ($(shell uname -m), x86_64)
 	KDIR = $(HOME)/Kernels/$(HOST_KERNEL_DIR)
@@ -12,7 +19,7 @@ else
 endif
 
 ARCH = arm
-CCFLAGS = -C
+CCFLAGS = -C -Wall
 COMPILER_PROG = arm-unknown-linux-gnueabihf-
 PWD = $(shell pwd)
 TARGET_PROG = test
@@ -31,9 +38,14 @@ REMFLAGS = -g -O0
 obj-m   := $(TARGET_MOD).o
 CFLAGS_$(TARGET_MOD).o := -DDEBUG
 
-all: $(TARGET_PROG).c
+all: myprog 
 ifeq ($(shell uname -m), x86_64)
-	$(COMPILER_PROG)cc $(TARGET_PROG).c -o $(TARGET_PROG) $(REMFLAGS)
+myprog: $(TARGET_PROG).o myi2c.o
+	$(COMPILER_PROG)cc $(TARGET_PROG).o myi2c.o -o $(TARGET_PROG) $(REMFLAGS)
+$(TARGET_PROG).o: $(TARGET_PROG).c
+	$(COMPILER_PROG)cc $(CCFLAGS) $(TARGET_PROG).c
+myi2c.o: myi2c.c
+	$(COMPILER_PROG)cc $(CCFLAGS) myi2c.c
 else
 	cc $(TARGET_PROG).c -o $(TARGET_PROG) $(REMFLAGS)
 endif
@@ -42,7 +54,7 @@ endif
 reboot_dev:
 	@./commands.sh -c reboot -devip $(DEV_ROOT_IP)
 copy_prog:
-	@./commands.sh -c copy-prog -projname $(PROJ_NAME) -progname $(TARGET_PROG) -devip $(DEV_ROOT_IP) -userdir $(USER_DIR)
+	@./commands.sh -c copy-prog -projname $(PROJ_NAME) -progname $(TARGET_PROG) -devip $(DEV_ROOT_IP) -p $(PORT) -userdir $(USER_DIR)
 
 clean:
 	@rm -f *.o .*.cmd .*.flags *.mod.c *.order *.dwo *.mod.dwo .*.dwo

@@ -30,8 +30,13 @@ do
 		-dtbname) 	echo "-dtbname = $2"
 					DTB_NAME="$2"
 					shift ;;
-		-userdir) 		echo "-userdir = $2"
+		-userdir) 	echo "-userdir = $2"
 					USER_DIR="$2"
+					shift ;;
+		-p) 		echo "-port = $2"
+					if [ "$2" -ne 0 ]; then
+						PORT="-P $2"
+					fi
 					shift ;;
 		-c) echo "-c = $2"
 			COMM="$2"
@@ -77,5 +82,5 @@ elif [ "$COMM" = "reboot" ]; then
 
 elif [ "$COMM" = "copy-prog" ]; then
 	echo "Copy prog"
-	scp ~/eclipse-workspace-drivers-OPI/$PROJ_NAME/$TARGET_PROG $DEV_ROOT_IP:/home/$USER_DIR/
+	scp $PORT ~/eclipse-workspace-drivers-OPI/$PROJ_NAME/$TARGET_PROG $DEV_ROOT_IP:/home/$USER_DIR/
 fi

@@ -25,16 +25,4 @@
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 		<nature>org.eclipse.linuxtools.tmf.project.nature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>include</name>
-			<type>2</type>
-			<location>/home/dmitry/Kernels/orange-pi-4.19.59/include</location>
-		</link>
-		<link>
-			<name>kernel</name>
-			<type>2</type>
-			<location>/home/dmitry/Kernels/orange-pi-4.19.59/kernel</location>
-		</link>
-	</linkedResources>
 </projectDescription>
