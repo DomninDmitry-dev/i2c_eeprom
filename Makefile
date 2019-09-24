@@ -19,11 +19,12 @@ else
 endif
 
 ARCH = arm
-CCFLAGS = -C -Wall
-COMPILER_PROG = arm-unknown-linux-gnueabihf-
+WARNFLAGS = -Wall
+REMFLAGS = -g -O0
+//COMPILER_PROG = arm-unknown-linux-gnueabihf-
+COMPILER_PROG = arm-linux-gnueabihf-
 PWD = $(shell pwd)
 TARGET_PROG = test
-REMFLAGS = -g -O0
 
 # Опция -g - помещает в объектный или исполняемый файл информацию необходимую для
 # работы отладчика gdb. При сборке какого-либо проекта с целью последующей отладки,
@@ -35,19 +36,17 @@ REMFLAGS = -g -O0
 # исходным кодом не будет явной, соответственно, пошаговая отладка программы
 # будет не возможна. При включении опции -g, рекомендуется включать и -O0.
 
-obj-m   := $(TARGET_MOD).o
-CFLAGS_$(TARGET_MOD).o := -DDEBUG
-
 all: myprog 
 ifeq ($(shell uname -m), x86_64)
+
 myprog: $(TARGET_PROG).o myi2c.o
-	$(COMPILER_PROG)cc $(TARGET_PROG).o myi2c.o -o $(TARGET_PROG) $(REMFLAGS)
-$(TARGET_PROG).o: $(TARGET_PROG).c
-	$(COMPILER_PROG)cc $(CCFLAGS) $(TARGET_PROG).c
-myi2c.o: myi2c.c
-	$(COMPILER_PROG)cc $(CCFLAGS) myi2c.c
+	$(COMPILER_PROG)gcc $(REMFLAGS) $(WARNFLAGS) $(TARGET_PROG).o myi2c.o -o $(TARGET_PROG)
+	
+$(TARGET_PROG).o: $(TARGET_PROG).c myi2c.c myi2c.h
+	$(COMPILER_PROG)gcc -c $(TARGET_PROG).c myi2c.c
+
 else
-	cc $(TARGET_PROG).c -o $(TARGET_PROG) $(REMFLAGS)
+	gcc $(TARGET_PROG).c -o $(TARGET_PROG) $(REMFLAGS)
 endif
 
 

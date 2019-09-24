@@ -34,7 +34,7 @@ int main(int argc, char **argv)
 	unsigned char rbuf[SIZE_PAGE] = {'\0'};	// Read buffer
 
 	// A test string to write (must be less than 32 characters!)
-	char wstring[] = "This is an EEPROM wri/read test.";
+	char wstring[] = "A test string to write";
 
 	// Open the I2C Bus
 	int fd = open(I2C_BUS, O_RDWR);

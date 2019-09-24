@@ -5,12 +5,13 @@
  *      Author: dmitry
  */
 
-#include <myi2c.h>
+#include "myi2c.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <linux/i2c-dev.h>
 #include <sys/ioctl.h>
 #include <fcntl.h>
+#include <string.h>
 
 //------------------------------------------------------------------------------
 int writeReg16DataBuf(int fd, u_int16_t regAddr, void* buf, int size)
