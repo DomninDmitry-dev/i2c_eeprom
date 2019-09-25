@@ -1,7 +1,7 @@
 eclipse.preferences.version=1
 environment/project/cdt.managedbuild.toolchain.gnu.base.643873309/PATH/delimiter=\:
 environment/project/cdt.managedbuild.toolchain.gnu.base.643873309/PATH/operation=replace
-environment/project/cdt.managedbuild.toolchain.gnu.base.643873309/PATH/value=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/usr/games\:/usr/local/games\:/snap/bin\:/home/dmitry/x-tools/arm-unknown-linux-gnueabihf/bin
+environment/project/cdt.managedbuild.toolchain.gnu.base.643873309/PATH/value=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/usr/games\:/usr/local/games\:/snap/bin\:/home/dmitry/x-tools/arm-unknown-linux-gnueabihf/bin\:/home/dmitry/gcc-linaro-7.3.1-2018.05-x86_64_arm-linux-gnueabihf/bin
 environment/project/cdt.managedbuild.toolchain.gnu.base.643873309/append=true
 environment/project/cdt.managedbuild.toolchain.gnu.base.643873309/appendContributed=true
 indexer/indexAllFiles=true

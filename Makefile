@@ -1,30 +1,29 @@
-DEV_KERNEL_DIR = 4.19.59-sunxi
-HOST_KERNEL_DIR = orange-pi-4.19.59
-PROJ_NAME = prog-i2c-eeprom
-DTB_NAME = sun8i-h3-orangepi-one
-USER_DIR = dmitry
+DEV_KERNEL_DIR := 4.19.59-sunxi
+HOST_KERNEL_DIR := orange-pi-4.19.59
+PROJ_NAME := prog-i2c-eeprom
+DTB_NAME := sun8i-h3-orangepi-one
+USER_DIR := dmitry
 
 ifeq ($(shell uname -n), ThinkPad-T430s)
-	DEV_ROOT_IP = root@192.168.0.120
-	PORT = 0
+	DEV_ROOT_IP := root@192.168.0.120
+	PORT := 0
 else
-	DEV_ROOT_IP = root@185.200.62.68
-	PORT = 10120
+	DEV_ROOT_IP := root@185.200.62.68
+	PORT := 10120
 endif
 
 ifeq ($(shell uname -m), x86_64)
-	KDIR = $(HOME)/Kernels/$(HOST_KERNEL_DIR)
+	KDIR := $(HOME)/Kernels/$(HOST_KERNEL_DIR)
 else
-	KDIR = /lib/modules/$(shell uname -r)/build
+	KDIR := /lib/modules/$(shell uname -r)/build
 endif
 
-ARCH = arm
-WARNFLAGS = -Wall
-REMFLAGS = -g -O0
-//COMPILER_PROG = arm-unknown-linux-gnueabihf-
-COMPILER_PROG = arm-linux-gnueabihf-
-PWD = $(shell pwd)
-TARGET_PROG = test
+WARNFLAGS := -Wall
+REMFLAGS := -g -O0
+#COMPILER_CROSS := arm-unknown-linux-gnueabihf-
+COMPILER_CROSS := arm-linux-gnueabihf-
+PWD := $(shell pwd)
+TARGET_PROG := main
 
 # Опция -g - помещает в объектный или исполняемый файл информацию необходимую для
 # работы отладчика gdb. При сборке какого-либо проекта с целью последующей отладки,
@@ -36,18 +35,32 @@ TARGET_PROG = test
 # исходным кодом не будет явной, соответственно, пошаговая отладка программы
 # будет не возможна. При включении опции -g, рекомендуется включать и -O0.
 
-all: myprog 
 ifeq ($(shell uname -m), x86_64)
-
-myprog: $(TARGET_PROG).o myi2c.o
-	$(COMPILER_PROG)gcc $(REMFLAGS) $(WARNFLAGS) $(TARGET_PROG).o myi2c.o -o $(TARGET_PROG)
-	
-$(TARGET_PROG).o: $(TARGET_PROG).c myi2c.c myi2c.h
-	$(COMPILER_PROG)gcc -c $(TARGET_PROG).c myi2c.c
-
+	CC := $(COMPILER_CROSS)gcc
 else
-	gcc $(TARGET_PROG).c -o $(TARGET_PROG) $(REMFLAGS)
+	CC := gcc
 endif
+
+# https://www.opennet.ru/docs/RUS/gnumake/
+
+SRC_DIRS	:= src1 \
+				src2
+
+SRC_FILES 	:= $(wildcard src/*.c)
+HEAD_FILES	:= $(wildcard inc/*.h)
+OBJ_FILES	:= $(patsubst src/%.c, %.o, $(notdir $(SRC_FILES)))
+
+all:
+	@echo $(SRC_FILES)
+	@echo $(HEAD_FILES)
+	@echo $(OBJ_FILES)
+
+#myprog: $(TARGET_PROG).o myi2c.o
+#	$(CC) $(REMFLAGS) $(WARNFLAGS) $(TARGET_PROG).o myi2c.o -o $(TARGET_PROG)
+#$(TARGET_PROG).o: $(TARGET_PROG).c
+#	$(CC) -c $(TARGET_PROG).c
+#myi2c.o: myi2c.c myi2c.h
+#	$(CC) -c myi2c.c 
 
 
 reboot_dev:
