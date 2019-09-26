@@ -7,6 +7,6 @@
 *.mod.c
 *.cache.mk
 *.dwo
-test
+myprog
 /.tmp_versions
 /.tracecompass
