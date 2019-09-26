@@ -37,7 +37,7 @@
                             							
                             <targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="cdt.managedbuild.targetPlatform.gnu.cross.1059732483" isAbstract="false" osList="all" superClass="cdt.managedbuild.targetPlatform.gnu.cross"/>
                             							
-                            <builder id="org.eclipse.linuxtools.cdt.autotools.core.toolchain.builder.1783083470" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Autotools Makefile Generator" superClass="org.eclipse.linuxtools.cdt.autotools.core.toolchain.builder"/>
+                            <builder buildPath="${workspace_loc:/prog-i2c-eeprom}/" enableAutoBuild="true" enabledIncrementalBuild="true" id="org.eclipse.linuxtools.cdt.autotools.core.toolchain.builder.1783083470" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Autotools Makefile Generator" superClass="org.eclipse.linuxtools.cdt.autotools.core.toolchain.builder"/>
                             							
                             <tool id="cdt.managedbuild.tool.gnu.cross.c.compiler.2109706681" name="Cross GCC Compiler" superClass="cdt.managedbuild.tool.gnu.cross.c.compiler">
                                 								
@@ -117,11 +117,7 @@
     	
     <storageModule moduleId="refreshScope" versionNumber="2">
         		
-        <configuration configurationName="Default">
-            			
-            <resource resourceType="PROJECT" workspacePath="/Chrdev"/>
-            		
-        </configuration>
+        <configuration configurationName="Default"/>
         	
     </storageModule>
     	

@@ -23,7 +23,7 @@ REMFLAGS := -g -O0
 #COMPILER_CROSS := arm-unknown-linux-gnueabihf-
 COMPILER_CROSS := arm-linux-gnueabihf-
 PWD := $(shell pwd)
-TARGET_PROG := main
+TARGET_PROG := myprog
 
 # Опция -g - помещает в объектный или исполняемый файл информацию необходимую для
 # работы отладчика gdb. При сборке какого-либо проекта с целью последующей отладки,
@@ -43,24 +43,30 @@ endif
 
 # https://www.opennet.ru/docs/RUS/gnumake/
 
-SRC_DIRS	:= src1 \
-				src2
+source := src/
+header := inc/
 
-SRC_FILES 	:= $(wildcard src/*.c)
-HEAD_FILES	:= $(wildcard inc/*.h)
-OBJ_FILES	:= $(patsubst %.c, %.o, $(notdir $(SRC_FILES)))
-#OBJ_FILES	:= $(SRC_FILES:.c=.o)
+SRC_FILES 	:= $(wildcard $(source)*.c)
+HEAD_FILES	:= $(wildcard $(header)*.h)
+#OBJ_FILES	:= $(patsubst %.c, %.o, $(SRC_FILES))
+OBJ_FILES	:= $(SRC_FILES:.c=.o)
+
+I_INC := $(addprefix -I../, $(HEAD_FILES))
+I_SRC := $(addprefix -I../, $(SRC_FILES))
 
 all: myprog
 
-myprog: main.o myi2c.o
-	$(CC) $(WARNFLAGS) $(addprefix -I../, $(SRC_FILES)) $(addprefix -I../, $(HEAD_FILES)) $^ -o $@
+myprog: $(OBJ_FILES)
+	@echo "linking "$@
+	$(CC) $(WARNFLAGS) $(I_INC) $(I_SRC) $(addprefix obj/, $(notdir $^)) -o $@
 
-main.o: src/main.c
-	$(CC) -c $(addprefix -I../, $(SRC_FILES)) $(addprefix -I../, $(HEAD_FILES)) $<
+$(source)%.o: $(source)%.c
+	@echo "compiling "$<
+	$(CC) -c $< -o $(addprefix obj/, $(notdir $@))
 	
-myi2c.o: src/myi2c.c
-	$(CC) -c $(addprefix -I../, $(SRC_FILES)) $(addprefix -I../, $(HEAD_FILES)) $<
+#myi2c.o: src/myi2c.c inc/myi2c.h
+#	@echo "compiling "$<
+#	$(CC) -c $<
 
 #myprog: $(TARGET_PROG).o myi2c.o
 #	$(CC) $(REMFLAGS) $(WARNFLAGS) $(TARGET_PROG).o myi2c.o -o $(TARGET_PROG)
@@ -76,8 +82,9 @@ copy_prog:
 	@./commands.sh -c copy-prog -projname $(PROJ_NAME) -progname $(TARGET_PROG) -devip $(DEV_ROOT_IP) -p $(PORT) -userdir $(USER_DIR)
 
 clean:
-	@rm -f *.o .*.cmd .*.flags *.mod.c *.order *.dwo *.mod.dwo .*.dwo
+	@rm -f obj/*.o src/*.o *.o .*.cmd .*.flags *.mod.c *.order *.dwo *.mod.dwo .*.dwo
 	@rm -f .*.*.cmd *~ *.*~ TODO.*
 	@rm -fR .tmp*
 	@rm -rf .tmp_versions
 	@rm -f *.ko *.symvers
+	@rm -f $(TARGET_PROG)
