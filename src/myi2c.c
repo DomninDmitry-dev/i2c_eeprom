@@ -5,7 +5,7 @@
  *      Author: dmitry
  */
 
-#include "myi2c.h"
+#include "../inc/myi2c.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <linux/i2c-dev.h>

@@ -48,12 +48,19 @@ SRC_DIRS	:= src1 \
 
 SRC_FILES 	:= $(wildcard src/*.c)
 HEAD_FILES	:= $(wildcard inc/*.h)
-OBJ_FILES	:= $(patsubst src/%.c, %.o, $(notdir $(SRC_FILES)))
+OBJ_FILES	:= $(patsubst %.c, %.o, $(notdir $(SRC_FILES)))
+#OBJ_FILES	:= $(SRC_FILES:.c=.o)
 
-all:
-	@echo $(SRC_FILES)
-	@echo $(HEAD_FILES)
-	@echo $(OBJ_FILES)
+all: myprog
+
+myprog: main.o myi2c.o
+	$(CC) $(WARNFLAGS) $(addprefix -I../, $(SRC_FILES)) $(addprefix -I../, $(HEAD_FILES)) $^ -o $@
+
+main.o: src/main.c
+	$(CC) -c $(addprefix -I../, $(SRC_FILES)) $(addprefix -I../, $(HEAD_FILES)) $<
+	
+myi2c.o: src/myi2c.c
+	$(CC) -c $(addprefix -I../, $(SRC_FILES)) $(addprefix -I../, $(HEAD_FILES)) $<
 
 #myprog: $(TARGET_PROG).o myi2c.o
 #	$(CC) $(REMFLAGS) $(WARNFLAGS) $(TARGET_PROG).o myi2c.o -o $(TARGET_PROG)
