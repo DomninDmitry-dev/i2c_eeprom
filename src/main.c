@@ -19,7 +19,7 @@
 #include <unistd.h> // for usleep
 #include "../inc/myi2c.h"
 
-// This is '1010 111 x' related to an EEPROM with A0, A1 and A2 pins connected to +Vcc (ID 111 = 7)
+// This is '1010 000 x' related to an EEPROM with A0, A1 and A2 pins connected to GND (ID 000 = 0)
 // Normally the last bit 'x' should be 0 for writing and 1 for reading, this is handled by the read/write functions
 #define ADDRESS 0x50
 #define SIZE_PAGE	32

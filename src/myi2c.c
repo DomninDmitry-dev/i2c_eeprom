@@ -18,7 +18,7 @@ int writeReg16DataBuf(int fd, u_int16_t regAddr, void* buf, int size)
 {
 	u_int8_t addr[2] = {0};
 	int w = 0;
-	void *wbuf;	// Write buffer
+	void *wbuf = NULL;	// Write buffer
 
 	wbuf = malloc(size);
 
@@ -29,7 +29,7 @@ int writeReg16DataBuf(int fd, u_int16_t regAddr, void* buf, int size)
 	memcpy(wbuf, addr, 2);
 
 	// Append the data to write (up to 128 bytes)
-	memcpy(&wbuf[2], buf, size);
+	memcpy(wbuf+2, buf, size);
 
 	// Write bytes to EEPROM
 	w = write(fd, (const void*)wbuf, size);
