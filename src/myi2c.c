@@ -20,7 +20,7 @@ int writeReg16DataBuf(int fd, u_int16_t regAddr, void* buf, int size)
 	int w = 0;
 	void *wbuf = NULL;	// Write buffer
 
-	wbuf = malloc(size);
+	wbuf = malloc(size+2);
 
 	addr[0] = regAddr >> 8; 	// high nibble
 	addr[1] = regAddr & 255; 	// low nibble
@@ -32,8 +32,8 @@ int writeReg16DataBuf(int fd, u_int16_t regAddr, void* buf, int size)
 	memcpy(wbuf+2, buf, size);
 
 	// Write bytes to EEPROM
-	w = write(fd, (const void*)wbuf, size);
-	if (w != size) {
+	w = write(fd, (const void*)wbuf, size+2);
+	if (w != size+2) {
 		printf("Failed to write buffer\n");
 		free(wbuf);
 		return -1;
@@ -64,4 +64,30 @@ int readReg16DataBuf(int fd, u_int16_t regAddr, void* buf, int size)
 	return 0;
 }
 //------------------------------------------------------------------------------
+int erasePage(int fd)
+{
+	u_int8_t addr[2] = {0};
+	int w = 0;
+	void *wbuf = NULL;	// Write buffer
+
+	wbuf = malloc(34);
+
+	//addr[0] = regAddr >> 8; 	// high nibble
+	//addr[1] = regAddr & 255; 	// low nibble
+
+	memset(wbuf, '\0', 34);
+
+	// Insert the memory address into the write buffer
+	memcpy(wbuf, addr, 2);
+
+	// Write bytes to EEPROM
+	w = write(fd, (const void*)wbuf, 34);
+	if (w != 34) {
+		printf("Failed to write buffer\n");
+		free(wbuf);
+		return -1;
+	}
+	free(wbuf);
+	return 0;
+}
 //------------------------------------------------------------------------------

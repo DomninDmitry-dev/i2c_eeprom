@@ -13,6 +13,7 @@
 
 int writeReg16DataBuf(int fd, u_int16_t regAddr, void* buf, int size);
 int readReg16DataBuf(int fd, u_int16_t regAddr, void* buf, int size);
+int erasePage(int fd);
 
 
 #endif /* MYI2C_H_ */

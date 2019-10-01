@@ -53,6 +53,7 @@ int main(int argc, char **argv)
 	}
 
 	writeReg16DataBuf(fd, start_Addr, (void*)wstring, strlen(wstring));
+	//erasePage(fd);
 
 	// Pause 10 milliseconds, give the EEPROM some time to complete the write cycle
 	usleep(10000);
