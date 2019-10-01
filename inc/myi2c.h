@@ -11,9 +11,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+int readReg16(int fd, u_int16_t regAddr);
+int writeReg16(int fd, u_int16_t regAddr, u_int8_t val);
 int writeReg16DataBuf(int fd, u_int16_t regAddr, void* buf, int size);
 int readReg16DataBuf(int fd, u_int16_t regAddr, void* buf, int size);
-int erasePage(int fd);
+int eraseBlock(int fd, u_int16_t regAddr, int size);
 
 
 #endif /* MYI2C_H_ */

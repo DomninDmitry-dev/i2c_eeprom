@@ -28,10 +28,11 @@
 #define I2C_BUS "/dev/i2c-1"
 
 //------------------------------------------------------------------------------
-int main(int argc, char **argv)
+int main(int argc, char *argv[])
 {
 	int start_Addr = 0; 				// 16 bit memory address ranging 0 ~ 65535
 	unsigned char rbuf[SIZE_PAGE] = {'\0'};	// Read buffer
+	u_int16_t hex;
 
 	// A test string to write (must be less than 32 characters!)
 	char wstring[] = "A test string to write";
@@ -52,8 +53,17 @@ int main(int argc, char **argv)
 		exit(EXIT_FAILURE);
 	}
 
+	/*if(strstr(argv[1], "-r") != 0) {
+		sscanf(argv[2], "0x%x", &hex);
+		readReg16(fd, hex);
+	}
+	else if(strstr(argv[1], "-w") != 0) {
+		sscanf(argv[2], "0x%x", &hex);
+		writeReg16(fd, hex, 0x12);
+	}*/
+
 	writeReg16DataBuf(fd, start_Addr, (void*)wstring, strlen(wstring));
-	//erasePage(fd);
+	//eraseBlock(fd, 32);
 
 	// Pause 10 milliseconds, give the EEPROM some time to complete the write cycle
 	usleep(10000);
